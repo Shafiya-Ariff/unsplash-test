@@ -1,0 +1,6 @@
+.errorBox {
+    background-color: rgb(119, 32, 46);
+    color: white;
+    font-size : 12px;
+    padding:10px 20px;
+}
