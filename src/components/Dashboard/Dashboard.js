@@ -20,11 +20,8 @@ export const Dashboard = (props) => {
     }, [getImages, page]);
 
     const fetchData = () => {
-        console.log(props.page);
         getImages(props.page);
     }
-
-    console.log(props.images);
 
     const breakpointColumnsObj = {
         default: 3,
@@ -44,25 +41,29 @@ export const Dashboard = (props) => {
                         <InfiniteScroll
                             dataLength={props.images.length}
                             next={fetchData}
-                            hasMore={props.images.length ? true : false}
-                        />
-                        <Masonry
-                            breakpointCols={breakpointColumnsObj}
-                            className="my-masonry-grid"
-                            columnClassName="my-masonry-grid_column"
+                            hasMore={props.error ? false : true}
+                            loader={<Spinner />}
+                            endMessage={
+                                <ErrorBox>{props.error}</ErrorBox>
+                              }
                         >
-                            {Object.values(props.images).map(image => (
-                                <div key={image.id} className="image">
-                                    <Image className="img" style={{ width: "100%" }} src={image.urls.small} alt={image.alt_description} />
-                                    <div className="caption">
-                                        <span style={{ marginRight: "5px" }}>
-                                            <Image className="profileImage" src={image.user.profile_image.small} />
-                                        </span>{image.user.name}
+                            <Masonry
+                                breakpointCols={breakpointColumnsObj}
+                                className="my-masonry-grid"
+                                columnClassName="my-masonry-grid_column"
+                            >
+                                {Object.values(props.images).map(image => (
+                                    <div key={image.id} className="image">
+                                        <Image className="img" style={{ width: "100%" }} src={image.urls.small} alt={image.alt_description} />
+                                        <div className="caption">
+                                            <span style={{ marginRight: "5px" }}>
+                                                <Image className="profileImage" src={image.user.profile_image.small} />
+                                            </span>{image.user.name}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </Masonry>
-
+                                ))}
+                            </Masonry>
+                        </InfiniteScroll>
                     </Container>
                     :
                     <ErrorBox>No Images Found!</ErrorBox>
