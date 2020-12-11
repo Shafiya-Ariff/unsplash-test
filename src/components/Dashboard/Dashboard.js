@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Container, Image } from 'react-bootstrap';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Masonry from 'react-masonry-css'
+import Masonry from 'react-masonry-css';
+import LazyLoad from 'react-lazy-load';
 
 import Spinner from '../UI/Spinner/Spinner';
 import ErrorBox from '../ErrorBox/ErrorBox';
@@ -53,6 +54,7 @@ export const Dashboard = (props) => {
                                 columnClassName="my-masonry-grid_column"
                             >
                                 {Object.values(props.images).map(image => (
+                                    <LazyLoad key={image.id} offsetVertical={700}>
                                     <div key={image.id} className="image">
                                         <Image className="img" style={{ width: "100%" }} src={image.urls.small} alt={image.alt_description} />
                                         <div className="caption">
@@ -61,12 +63,13 @@ export const Dashboard = (props) => {
                                             </span>{image.user.name}
                                         </div>
                                     </div>
+                                    </LazyLoad>
                                 ))}
                             </Masonry>
                         </InfiniteScroll>
                     </Container>
                     :
-                    <ErrorBox>No Images Found!</ErrorBox>
+                    <ErrorBox>{props.error}</ErrorBox>
             }
         </div>
     )
